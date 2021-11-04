@@ -42,3 +42,28 @@ PUT /test_index
 
 # 删除一个存在的Index
 DELETE /test_index
+
+
+# 为Index定制Analyzer，名字叫custom_spanish_analyzer
+PUT /test_custom_analyzer
+{
+    "settings": {
+        "number_of_shards": 5,
+        "number_of_replicas": 1,
+        "analysis": {
+            "analyzer": {
+                "custom_spanish_analyzer": {
+                    "type": "standard",
+                    "stopwords": "_spanish_"
+                }
+            }
+        }
+    }
+}
+# custom_spanish_analyzer不是全局的，它只存在于这个索引中
+# 测试定制的Analyzer
+GET /test_custom_analyzer/_analyze
+{
+    "analyzer": "custom_spanish_analyzer", 
+    "text": "El veloz zorro marrón"
+}
