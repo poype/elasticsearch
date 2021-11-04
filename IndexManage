@@ -1,0 +1,40 @@
+# 创建一个新的Index
+
+PUT /test_index
+{
+  "settings": {
+      "number_of_shards": 5,
+      "number_of_replicas": 1
+  },
+  "mappings": {
+      "employee": {
+          "properties": {
+              "about": {
+                  "type": "text"
+              },
+              "age": {
+                  "type": "long"
+              },
+              "first_name": {
+                  "type": "text"
+              },
+              "last_name": {
+                  "type": "text"
+              },
+              "interests": {
+                  "type": "text"
+              }
+          }
+      }
+  }
+}
+
+# 从ElasticSearch 6.X版本开始，一个index下面只能有一个type
+
+# number_of_shards: 
+#     The number of primary shards that an index should have, which defaults to 5.
+#     This setting cannot be changed after index creation.
+
+# number_of_replicas
+#     The number of replica shards (copies) that each primary shard should have, which defaults to 1. 
+#     This setting can be changed at any time on a live index
