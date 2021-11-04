@@ -38,3 +38,7 @@ PUT /test_index
 # number_of_replicas
 #     The number of replica shards (copies) that each primary shard should have, which defaults to 1. 
 #     This setting can be changed at any time on a live index
+
+
+# 删除一个存在的Index
+DELETE /test_index
