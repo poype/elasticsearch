@@ -125,3 +125,15 @@ GET /test_create_custom_analyzer/_analyze
 # 在json中直接写注释是会报错的，真正执行的时候要删掉
 # analyzer由Character filter, Tokenizer和Token filter组成。
 # 一个Analyzer可以有0或多个character filter，但必须有且仅有一个tokenizer，也可以有任意数量的Token filter。
+
+
+# 查询API，可以使用_source属性明确指定查询结果中只包含感兴趣的property
+GET /test_create_custom_analyzer/my_type/_search
+{
+    "query": {
+        "match_all": {}
+    }, 
+    "_source": ["content"]
+}
+
+# 测试的索引中包含title和content两个property，默认查询结果中同时包含所有的property，使用_source明确指定结果中只包含content property
