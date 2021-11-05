@@ -67,3 +67,61 @@ GET /test_custom_analyzer/_analyze
     "analyzer": "custom_spanish_analyzer", 
     "text": "El veloz zorro marrón"
 }
+
+
+
+# 创建自定制的Analyzer
+PUT /test_create_custom_analyzer
+{
+    "settings": {
+        "number_of_shards": 5,
+        "number_of_replicas": 1,
+
+        "analysis": {
+            # 自定义一个char_filter，将&转换成and，marco转换成poype
+            "char_filter": {
+                "&_to_and": {
+                    "type": "mapping",
+                    "mappings": ["&=> and", "marco=> poype"]
+                }
+            },
+            # 自定义一个token_filter，自定义了stopword列表
+            "filter": {
+                "my_stopwords": {
+                    "type": "stop",
+                    "stopwords": ["the", "a", "ab", "ba"]
+                }
+            },
+
+            "analyzer": {
+                # 定义自己的analyzer，使用了上面自定义的char_filter和token_filter
+                "my_analyzer": {
+                    "type": "custom",
+                    "char_filter": ["html_strip", "_to_and"],
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "my_stopwords"]
+                }
+            }
+        }
+    }
+    "mappings": {
+        "my_type": {
+            "properties": {
+                "title": {
+                    # 指定title字段使用自己定制的analyzer
+                    "type": "text",
+                    "analyzer": "my_analyzer"
+                }
+            }
+        }
+    }
+}
+
+GET /test_create_custom_analyzer/_analyze
+{
+    "analyzer": "my_analyzer", 
+    "text": "The quick & brown fox ab ba, a marco"
+}
+# 在json中直接写注释是会报错的，真正执行的时候要删掉
+# analyzer由Character filter, Tokenizer和Token filter组成。
+# 一个Analyzer可以有0或多个character filter，但必须有且仅有一个tokenizer，也可以有任意数量的Token filter。
