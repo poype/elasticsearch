@@ -137,3 +137,30 @@ GET /test_create_custom_analyzer/my_type/_search
 }
 
 # 测试的索引中包含title和content两个property，默认查询结果中同时包含所有的property，使用_source明确指定结果中只包含content property
+
+
+
+
+# 通过dynamic参数设置type是否可以动态扩展field，它可以取三个值：true, false, strict
+PUT /test_dynamic_mapping
+{
+    "mappings": {
+        "test_type": {
+            "dynamic": "strict",
+            "properties": {
+                "title": {
+                    "type": "text"
+                },
+                "stash": {
+                    "type": "object",
+                    "dynamic": true
+                }
+            }
+        }
+    }
+}
+# true, Add new fields dynamically -- the default
+# false, Ignore new fields
+# strict, Throw an exception if an unknown field is encountered
+# 在本例中，将test_type全局dynamic参数设置为strict，但将stash对象的dynamic参数设置为true
+# 所以整个test_type是不能动态扩展字段的，但stash对象下面是可以动态扩展字段的
