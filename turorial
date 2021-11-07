@@ -1,0 +1,103 @@
+
+# 保存一个document，自动创建一个index和对应的type
+PUT /megacorp/employee/1
+{
+    "first_name": "John",
+    "last_name": "Smith",
+    "age": 25,
+    "about": "I love to go rock climbing",
+    "interests":  ["sports", "music"]
+}
+# megacorp: The index name
+# employee: The type name
+# 1: The ID of this particular employee
+
+# 下面再多增加两条document
+PUT /megacorp/employee/2
+{
+    "first_name" : "Jane",
+    "last_name" : "Smith",
+    "age" : 32,
+    "about" : "I like to collect rock albums",
+    "interests": [ "music" ]
+}
+PUT /megacorp/employee/3
+{
+    "first_name" : "Douglas",
+    "last_name" : "Fir",
+    "age" : 35,
+    "about": "I like to build cabinets",
+    "interests": [ "forestry" ]
+}
+
+# 根据ID查询单个document
+GET /megacorp/employee/1
+
+# _search endpoint, 搜索所有的document
+GET /megacorp/employee/_search
+
+# 查询last_name是Smith的document
+GET /megacorp/employee/_search
+{
+    "query" : {
+        "match" : {
+            "last_name" : "Smith"
+        }
+    }
+}
+
+# 除了last_name是smith这个条件，再增加age大于30这个条件
+GET /megacorp/employee/_search
+{
+    "query": {
+        "bool": {
+            "filter": {
+                "range": {
+                    "age": { 
+                        "gt" : 30 
+                    }
+                }
+            },
+            "must" : {
+                "match" : {
+                    "last_name": "smith"
+                }
+            }
+        }
+    }
+}
+
+# full text search，会对次做analyze
+GET /megacorp/employee/_search
+{
+    "query" : {
+        "match" : {
+            "about" : "rock climbing"
+        }
+    }
+}
+
+# 也是full text search，但不会对query string做analyze，结果中必须包含"rock climbing"这个字符串，差一点都不行
+GET /megacorp/employee/_search
+{
+    "query" : {
+        "match_phrase" : {
+            "about" : "rock climbing"
+        }
+    }
+}
+
+# highlight search，会将匹配的部分用<em></em>包起来
+GET /megacorp/employee/_search
+{
+    "query": {
+        "match": {
+            "about": "rock climbing"
+        }
+    },
+    "highlight": {
+        "fields": {
+            "about": {}
+        }
+    }
+}
