@@ -101,3 +101,39 @@ GET /megacorp/employee/_search
         }
     }
 }
+
+
+
+# 查看一个document是否存在
+HEAD /test_alias_v1/my_type/1
+
+
+
+# 更新一个已存在的document
+# Documents in Elasticsearch are immutable; we cannot change them. 
+# Instead, if we need to update an existing document, we reindex or replace it.
+# Even though for partial updates to a document, elasticsearch follows the exact process to update an existing document.
+# 1. Retrieve the JSON from the old document
+# 2. Change it
+# 3. Delete the old document
+# 4. Index a new document
+# request:
+PUT /test_alias_v1/my_type/1
+{
+    "title": "update_title"
+}
+
+# response:
+{
+    "_index" : "test_alias_v1",
+    "_type" : "my_type",
+    "_id" : "1",
+    "_version" : 2,
+    "_seq_no" : 1,
+    "_primary_term" : 1,
+    "found" : true,
+    "_source" : {
+        "title" : "update_title"
+    }
+}
+# _version已经递增到2
