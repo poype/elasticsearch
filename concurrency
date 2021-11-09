@@ -1,0 +1,12 @@
+# 确保我们是在create一个新的document，而不是在覆盖一个已存在的document，相当于在create时加了乐观锁。有下面两种方法
+# 第一种方式
+PUT /test_alias_v1/my_type/8?op_type=create
+{
+    "title": "test create"
+}
+
+# 第二种方式
+PUT /test_alias_v1/my_type/9/_create
+{
+    "title": "test create"
+}
