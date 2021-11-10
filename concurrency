@@ -58,3 +58,9 @@ POST /website/blog/1/_update
         "views": 1
     }
 }
+
+# Using Scripts to Make Partial Updates，对原来的views字段加1
+POST /website/blog/1/_update
+{
+    "script" : "ctx._source.views+=1"
+}
