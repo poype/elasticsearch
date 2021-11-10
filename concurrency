@@ -64,3 +64,12 @@ POST /website/blog/1/_update
 {
     "script" : "ctx._source.views+=1"
 }
+
+# 加retry_on_conflict参数，当update发生冲突时，自动重试5次
+POST /website/pageviews/1/_update?retry_on_conflict=5
+{
+    "script" : "ctx._source.views+=1",
+    "upsert": {
+        "views": 0
+    }
+}
