@@ -41,3 +41,20 @@ PUT /website/blog/2/?version=10&version_type=external
     "text": "Starting to get the hang of this..."
 }
 
+# 使用_update endpoint 可以部分更新一个document
+# 在原来document基础上增加两个新的field
+POST /website/blog/1/_update
+{
+    "doc" : {
+        "tags" : [ "testing" ],
+        "views": 0
+    }
+}
+
+# 将document中的views字段更新为1，其它保持不变
+POST /website/blog/1/_update
+{
+    "doc" : {
+        "views": 1
+    }
+}
