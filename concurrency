@@ -10,3 +10,34 @@ PUT /test_alias_v1/my_type/9/_create
 {
     "title": "test create"
 }
+
+# 加锁创建一条document，此时document的_version字段时1
+PUT /website/blog/1/_create
+{
+    "title": "My first blog entry",
+    "text": "Just trying this out..."
+}
+
+# 加乐观锁更新此document，此时此时document的_version字段时2
+PUT /website/blog/1?version=1
+{
+    "title": "My first blog entry",
+    "text": "Starting to get the hang of this..."
+}
+
+# 上面document的_version值都是ES内部生成的，可以使用外部值作为_version，例如DB中的update_time
+# 当使用version_type=external参数update一条document时，ES不是检查version参数的值是否跟document当前的_version相同，而是检查version参数的值是否大于document的_version
+# 下面的命令创建一条新的document，这种形式不能使用_create锁，也没必要使用_create锁
+PUT /website/blog/2/?version=5&version_type=external
+{   
+    "title": "My first external blog entry",
+    "text": "Starting to get the hang of this..."
+}
+
+# 更新这个document，注意version参数的值一定要大于document当前的_version
+PUT /website/blog/2/?version=10&version_type=external
+{
+    "title": "My first external blog entry",
+    "text": "Starting to get the hang of this..."
+}
+
