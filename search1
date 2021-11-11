@@ -1,0 +1,36 @@
+# simply returns all documents in all indices in the cluster
+GET /_search
+
+
+# 明确指定timeout的时间
+# Elasticsearch will return any results that it has gathered from each shard before the requests timed out.
+GET /_search?timeout=1ms
+
+
+
+
+# 由于ES6.x之后一个Index只有一个type，所以下面很多“all types”都没有意义了
+# Search all types in all indices
+GET /_search
+
+# Search all types in the gb index
+GET /gb/_search
+
+# Search all types in the gb and us indices
+GET /gb,us/_search
+
+# Search all types in any indices beginning with g or beginning with u
+GET /g*,u*/_search
+
+# Search type user in the gb index
+GET /gb/user/_search
+
+
+
+
+# paginate
+GET /_search?size=5
+
+GET /_search?size=5&from=5
+
+GET /_search?size=5&from=10
