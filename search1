@@ -34,3 +34,9 @@ GET /_search?size=5
 GET /_search?size=5&from=5
 
 GET /_search?size=5&from=10
+
+
+# employee中任何一个field只要包含like，都会被搜索到
+GET /megacorp/employee/_search?q=like
+# How has Elasticsearch managed to find results in three different fields?
+# When you index a document, Elasticsearch takes the string values of all of its fields and concatenates them into one big string, which it indexes as the special _all field.
