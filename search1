@@ -40,3 +40,12 @@ GET /_search?size=5&from=10
 GET /megacorp/employee/_search?q=like
 # How has Elasticsearch managed to find results in three different fields?
 # When you index a document, Elasticsearch takes the string values of all of its fields and concatenates them into one big string, which it indexes as the special _all field.
+
+
+
+# _analyze endpoint测试analyzer
+GET /_analyze
+{
+    "analyzer": "english", 
+    "text": " I love cat and dog, I don't like the fruit and vegitable"
+}
