@@ -31,5 +31,22 @@ PUT /test_index/_mapping/employee
 
 
 
-
-
+# keyword类型
+# ES更新到5版本后，取消了string数据类型，代替它的是keyword和text数据类型
+# keyword数据类型 不进行分词，直接索引。最大支持的长度为——32766个UTF-8类型的字符
+# text数据类型 支持分词，全文检索。最大支持的字符长度无限制
+PUT /website
+{
+    "mappings": {
+        "blog": {
+            "properties": {
+                "title": {
+                    "type": "keyword"
+                },
+                "content": {
+                    "type": "text"
+                }
+            }
+        }
+    }
+}
