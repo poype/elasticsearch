@@ -1,0 +1,35 @@
+# 创建一个新的Index
+
+# Elasticsearch supports the following simple field types:
+# • String: text
+# • Whole number: byte, short, integer, long
+# • Floating-point: float, double
+# • Boolean: boolean
+# • Date: date
+
+# When you index a document that contains a new field—one previously not seen—Elasticsearch will use dynamic
+# mapping to try to guess the field type from the basic datatypes available in JSON, using the following rules:
+# Boolean: true or false => boolean
+# Whole number: 123 => long
+# Floating point: 123.45 => double
+# String, valid date: 2014-09-15 => date
+# String: foo bar => text
+
+# 一个field三个属性： type, index, analyzer
+# index: 新的elasticsearch版本只能取true和false两个值，即表示是否index某个field. The default value of index for a string field is true
+PUT /test_index/_mapping/employee
+{
+    "properties" : {
+        "new_field" : {
+            "type" : "text",
+            "index": false
+        }
+    }
+}
+# 新增加一个new_field字段，index是false，当使用new_field作为条件搜索时，会抛下面的异常
+# Cannot search on field [new_field] since it is not indexed.
+
+
+
+
+
