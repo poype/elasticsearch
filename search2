@@ -184,3 +184,39 @@ GET /megacorp/employee/_search
 # must_not: Clauses that must not match for the document to be included.
 # should: If these clauses match, they increase the _score; otherwise, they have no effect.
 # should are simply used to refine the relevance score for each document.
+
+
+
+
+# Combining Queries with Filters
+# 过滤查询已被弃用，并在ES 5.0中删除, 现在已经没有filtered关键字了。
+# 所以也就没有bool filter了，这也就说明了为什么上面bool filter should clause结果与预期不符。
+# 在bool query中使用filter进行过滤
+GET /megacorp/employee/_search
+{
+    "query": {
+        "bool": {
+            "filter": {
+                "range": {
+                    "age": {
+                        "lt": 40
+                    }
+                }
+            }, 
+            "must": [
+                {
+                    "match": {
+                        "first_name": "zhang"
+                    }
+                }
+            ],
+            "must_not": [
+                {
+                    "match": {
+                        "last_name": "liang"
+                    }
+                }
+            ]
+        }
+    }
+}
