@@ -1,0 +1,118 @@
+
+# 最简单的 full search request
+GET /megacorp/employee/_search
+{
+    "query": {
+        "match": {
+            "about": "build"
+        }
+    }
+}
+
+# 没有条件限制，查询所有的document，但一次只是会返回10条document
+GET /megacorp/employee/_search
+{
+    "query": {
+        "match_all": {}
+    }
+}
+
+# There are two DSLs: the query DSL and the filter DSL.
+# A filter asks a yes|no question of every document and is used for fields that contain exact values.
+# A query asks the question: How well does this document match?
+
+# filter
+# 查询所有age是25的document
+GET /megacorp/employee/_search
+{
+    "query": {
+        "term": {
+            "age": 25
+        }
+    }
+}
+# 由于这个查询只有filter clause，没有query clause，所以max_score是1.0，所有匹配document的_score都是1.0.
+# 注意filter查询的条件只能作用于exact value的field，不能作用于full text
+
+# terms filter，下面的查询，age是25或32的都满足filter条件
+GET /megacorp/employee/_search
+    {
+    "query": {
+        "terms": {
+            "age": [25, 32]
+        }
+    }
+} 
+
+# range filter, 注意term关键字被range取代了，查询满足 34 < age < 100 的document. 
+GET /megacorp/employee/_search
+{
+    "query": {
+        "range": {
+            "age": {
+                "gt": 34,
+                "lt": 100
+            }
+        }
+    }
+}
+# 所有范围关键字如下所示：
+# gt: Greater than
+# gte: Greater than or equal to
+# lt: Less than
+# lte: Less than or equal to
+
+
+# exists filter， 查询extend_field存在的所有document
+GET /megacorp/employee/_search
+{
+    "query": {
+        "exists": {
+            "field": "extend_field"
+        }
+    }
+}
+
+
+# bool filter
+GET /megacorp/employee/_search
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {
+                        "age": 88
+                    }
+                }
+            ],
+            "must_not": [
+                {
+                    "exists": {
+                        "field": "extend_field"
+                    }
+                }
+            ],
+            "should": [
+                {
+                    "range": {
+                        "salary": {
+                            "gt": 1000
+                        }
+                    }
+                },
+                {
+                    "range": {
+                        "level": {
+                            "gt": 5
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+# must like and. must_not like not. should like or.
+# 但是should子句跟预期的并不一样，按照书中的解释，上面的查询应该等价于：(age == 88) && !(extend_field exists) && (salary > 1000 || level > 5)
+# 然而结果并不是这样,即使不满足(salary > 1000 || level > 5)这个条件的document也在结果中，而且查询结果中所有document的_score值都是1.0
+# 只是满足should条件的document排在查询结果的前面，不满足的排在查询结果的后面。
