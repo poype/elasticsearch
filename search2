@@ -220,3 +220,51 @@ GET /megacorp/employee/_search
         }
     }
 }
+
+
+# sort, 查询结果根据age字段正向排序
+GET /megacorp/employee/_search
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {
+                        "first_name": "zhang"
+                    }
+                }
+            ],
+            "must_not": [
+                {
+                    "match": {
+                        "last_name": "liang"
+                    }
+                }
+            ]
+        }
+    },
+    "sort": [
+        {
+            "age": {
+                "order": "asc"
+            }
+        }
+    ]
+}
+# The _score is not calculated, because it is not being used for sorting. 不再计算score，因为不用。
+# 结果中多了一个sort字段
+
+
+# 可以按多个字段排序
+"sort": [
+    {
+        "age": {
+            "order": "asc"
+        }
+    },
+    {
+        "salary": {
+            "order": "desc"
+        }
+    }
+]
