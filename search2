@@ -116,3 +116,71 @@ GET /megacorp/employee/_search
 # 但是should子句跟预期的并不一样，按照书中的解释，上面的查询应该等价于：(age == 88) && !(extend_field exists) && (salary > 1000 || level > 5)
 # 然而结果并不是这样,即使不满足(salary > 1000 || level > 5)这个条件的document也在结果中，而且查询结果中所有document的_score值都是1.0
 # 只是满足should条件的document排在查询结果的前面，不满足的排在查询结果的后面。
+
+
+
+
+# query
+
+# 使用match代替term，注意原来的tearm被替换成了match，结果一样，所有结果的_score值都是1.0
+GET /megacorp/employee/_search
+{
+    "query": {
+        "match": {
+            "age": 88
+        }
+    }
+}
+
+# multi_match, 同时在多个field中查询关键字。查询first_name和about两个field中包含build关键字的document
+GET /megacorp/employee/_search
+{
+    "query": {
+        "multi_match": {
+            "query": "build",
+            "fields": ["first_name", "about"]
+        }
+    }
+}
+
+
+# bool query
+GET /megacorp/employee/_search
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {
+                        "first_name": "zhang"
+                    }
+                }
+            ],
+            "must_not": [
+                {
+                    "match": {
+                        "last_name": "liang"
+                    }
+                }
+            ],
+            "should": [
+                {
+                    "match": {
+                        "age": 35
+                    }
+                },
+                {
+                    "range": {
+                        "salary": {
+                            "gt": 0
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+# must: Clauses that must match for the document to be included.
+# must_not: Clauses that must not match for the document to be included.
+# should: If these clauses match, they increase the _score; otherwise, they have no effect.
+# should are simply used to refine the relevance score for each document.
