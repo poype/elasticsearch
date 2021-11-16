@@ -1,0 +1,23 @@
+# create: Create a document only if the document does not already exist. 
+# index: Create a new document or replace an existing document. 
+# update: Do a partial update on a document.
+# delete: Delete a document.
+
+# format
+{ action: { metadata }}
+{ request body }
+{ action: { metadata }}
+{ request body }
+
+# delete action does not have a request body
+
+
+POST /_bulk
+{"delete": {"_index": "website", "_type": "blog", "_id": "123"}}
+{"create": {"_index": "website", "_type": "blog", "_id": "123"}}
+{"title": "My first blog post"}
+{"index": {"_index": "website", "_type": "blog"}}
+{"title": "My second blog post"}
+{"update": {"_index": "website", "_type": "blog", "_id": "123"}}
+{"doc": {"title": "My updated blog post"}}
+
