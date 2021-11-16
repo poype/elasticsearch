@@ -1,0 +1,26 @@
+# mget API expects a docs array, each element of which specifies the _index, _type, and _id metadata of the document you wish to retrieve
+GET /_mget
+{
+    "docs" : [
+        {
+            "_index": "kibana_sample_data_ecommerce",
+            "_type": "_doc",
+            "_id": "Rkr_JX0Bjb6mm8dEEn6k"
+        },
+        {
+            "_index": "kibana_sample_data_ecommerce",
+            "_type": "_doc",
+            "_id": "R0r_JX0Bjb6mm8dEEn6k",
+            "_source": ["currency", "customer_first_name"]
+        }
+    ]
+}
+# You can also specify a _source parameter if you just want to retrieve one or more specific fields
+
+
+
+# if all the documents have the same _index and _type, you can just pass an array of ids instead of the full docs array:
+GET /kibana_sample_data_ecommerce/_doc/_mget
+{
+    "ids" : ["Rkr_JX0Bjb6mm8dEEn6k", "R0r_JX0Bjb6mm8dEEn6k"]
+}
