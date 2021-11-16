@@ -1,0 +1,16 @@
+# 查看集群中的node信息
+GET /_cat/nodes
+
+# 查看集群中的shard信息
+GET /_cat/shards
+
+# 查看集群的健康度
+GET /_cluster/health
+
+
+
+# 节点的角色
+Master-eligible
+Master
+Data Node
+Coordinating Node
