@@ -66,6 +66,15 @@ services:
       - "5601:5601"
     networks:
       - elastic
+  cerebro:
+    image: lmenezes/cerebro:0.9.4
+    container_name: cerebro
+    ports:
+      - "9000:9000"
+    command:
+      - -Dhosts.0.host=http://es01:9200
+    networks:
+      - elastic
 
 volumes:
   data01:
