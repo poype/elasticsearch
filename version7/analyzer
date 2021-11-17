@@ -1,0 +1,53 @@
+
+GET _analyze
+{
+    "analyzer": "standard",
+    "text": "2 running Quick brown-foxes leap over lazy dogs in the summer evening."
+}
+
+
+GET _analyze
+{
+    "analyzer": "simple",
+    "text": "2 running Quick brown-foxes leap over lazy dogs in the summer evening."
+}
+
+GET _analyze
+{
+    "analyzer": "stop",
+    "text": "2 running Quick brown-foxes leap over lazy dogs in the summer evening."
+}
+
+GET _analyze
+{
+    "analyzer": "whitespace",
+    "text": "2 running Quick brown-foxes leap over lazy dogs in the summer evening."
+}
+
+# 不做任何分词处理
+GET _analyze
+{
+    "analyzer": "keyword",
+    "text": "2 running Quick brown-foxes leap over lazy dogs in the summer evening."
+}
+
+
+#english
+GET _analyze
+{
+    "analyzer": "english",
+    "text": "2 running Quick brown-foxes leap over lazy dogs in the summer evening."
+}
+
+# icu_analyzer插件要额外安装后才能使用
+POST _analyze
+{
+    "analyzer": "icu_analyzer",
+    "text": "他说的确实在理”"
+}
+
+POST _analyze
+{
+    "analyzer": "standard",
+    "text": "他说的确实在理”"
+}
