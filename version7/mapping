@@ -1,0 +1,9 @@
+# Dynamic mapping
+PUT mapping_test/_doc/1
+{
+    "firstName":"Chan",
+    "lastName": "Jackie",
+    "loginDate":"2018-07-24T10:29:48.103Z"
+}
+# loginDate被自动识别为date类型
+# text类型的字段都会被自动添加一个keyword类型的子字段
