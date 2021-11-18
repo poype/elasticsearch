@@ -23,3 +23,15 @@ GET /website/_search
 }
 # 虽然查询条件是air condition，但title中包含condition air的document也算在查询结果中
 # operator默认值为or
+
+
+# 想要精确匹配一个phrase，可以使用match_phrase
+GET /website/_search
+{
+    "query": {
+        "match_phrase": {
+            "title": "air condition"
+        }
+    }
+}
+# 这次condition air不会在查询结果中了
