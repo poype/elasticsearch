@@ -7,3 +7,10 @@ PUT mapping_test/_doc/1
 }
 # loginDate被自动识别为date类型
 # text类型的字段都会被自动添加一个keyword类型的子字段
+
+
+
+
+# 多字段（multi-fields）， 通过不同的方法索引相同的字段通常非常有用，这就是多字段的目的。
+# 例如一段文本既可以支持中文搜索，也可以支持拼音搜索，也是利用了多字段特性
+# 参考文章：https://blog.csdn.net/qq_32165041/article/details/83688593
